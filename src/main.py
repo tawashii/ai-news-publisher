@@ -8,7 +8,7 @@ import sys
 import traceback
 import requests
 from datetime import datetime
-from typing import List
+from typing import List, Optional, NoReturn
 
 from utils.config import Config
 from utils.database import ArticleHistoryDB
@@ -24,21 +24,23 @@ from generators.ai_summarizer import AISummarizer
 from publishers.hatena_publisher import HatenaPublisher
 
 class NewsPublisher:
-    def __init__(self):
+    """AIニュース自動投稿システムのメインクラス - 型安全性を強化"""
+    
+    def __init__(self) -> None:
         self.logger = get_logger("main")
-        self.config = Config()
-        self.db = ArticleHistoryDB()
-        self.github = GitHubIssueCreator()
+        self.config: Config = Config()
+        self.db: ArticleHistoryDB = ArticleHistoryDB()
+        self.github: GitHubIssueCreator = GitHubIssueCreator()
         
         # 各コンポーネントの初期化
-        self.rss_collector = RSSCollector(self.config)
-        self.twitter_collector = TwitterCollector(self.config)
-        self.content_filter = ContentFilter(self.config)
-        self.popularity_scorer = PopularityScorer(self.config)
-        self.ai_summarizer = AISummarizer(self.config)
-        self.hatena_publisher = HatenaPublisher(self.config)
+        self.rss_collector: RSSCollector = RSSCollector(self.config)
+        self.twitter_collector: TwitterCollector = TwitterCollector(self.config)
+        self.content_filter: ContentFilter = ContentFilter(self.config)
+        self.popularity_scorer: PopularityScorer = PopularityScorer(self.config)
+        self.ai_summarizer: AISummarizer = AISummarizer(self.config)
+        self.hatena_publisher: HatenaPublisher = HatenaPublisher(self.config)
     
-    def run(self):
+    def run(self) -> None:
         """メイン処理を実行"""
         try:
             self.logger.start_process("AI Tech News Auto Publisher")
