@@ -3,14 +3,20 @@ import feedparser
 from datetime import datetime, timedelta
 from typing import List
 import time
-from .base_collector import BaseCollector, Article
-from ..utils.constants import (
+import sys
+import os
+
+# パスの設定
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from collectors.base_collector import BaseCollector, Article
+from utils.constants import (
     NITTER_INSTANCES, USER_AGENT, RSS_MAX_ENTRIES, 
     MAX_TITLE_LENGTH, MAX_SUMMARY_LENGTH, AI_RELATED_KEYWORDS,
     HIGH_IMPORTANCE_KEYWORDS, MEDIUM_IMPORTANCE_KEYWORDS,
     BASE_SCORE, HIGH_IMPORTANCE_BONUS, MEDIUM_IMPORTANCE_BONUS, MAX_SCORE
 )
-from ..utils.logger import get_logger
+from utils.logger import get_logger
 
 class TwitterCollector(BaseCollector):
     def __init__(self, config):

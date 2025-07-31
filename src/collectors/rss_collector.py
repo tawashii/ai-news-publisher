@@ -2,7 +2,13 @@ import feedparser
 import requests
 from datetime import datetime
 from typing import List
-from .base_collector import BaseCollector, Article
+import sys
+import os
+
+# パスの設定
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from collectors.base_collector import BaseCollector, Article
 
 class RSSCollector(BaseCollector):
     def __init__(self, config):

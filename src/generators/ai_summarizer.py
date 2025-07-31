@@ -2,10 +2,16 @@ import google.generativeai as genai
 from datetime import datetime
 from typing import List
 import random
-from ..collectors.base_collector import Article
-from ..utils.rate_limiter import rate_limited, retry_with_backoff
-from ..utils.constants import TARGET_ARTICLE_LENGTH, MAX_ARTICLES_PER_POST, DATE_FORMAT
-from ..utils.logger import get_logger
+import sys
+import os
+
+# パスの設定
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from collectors.base_collector import Article
+from utils.rate_limiter import rate_limited, retry_with_backoff
+from utils.constants import TARGET_ARTICLE_LENGTH, MAX_ARTICLES_PER_POST, DATE_FORMAT
+from utils.logger import get_logger
 
 class AISummarizer:
     def __init__(self, config):

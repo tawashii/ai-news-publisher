@@ -32,9 +32,9 @@ jobs:
         HATENA_BLOG_ID: ${{ secrets.HATENA_BLOG_ID }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPO: ${{ github.repository }}
+        PYTHONPATH: ${{ github.workspace }}/src
       run: |
-        cd src
-        python main.py
+        python src/main.py
     
     - name: Upload logs (on failure)
       if: failure()
