@@ -1,5 +1,11 @@
 from typing import List
-from ..collectors.base_collector import Article
+import sys
+import os
+
+# パスの設定
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from collectors.base_collector import Article
 
 class PopularityScorer:
     def __init__(self, config):
