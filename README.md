@@ -35,7 +35,6 @@ AI関連のテックニュースを自動収集し、はてなブログに毎日
 
 ```
 HATENA_API_KEY=your_hatena_api_key
-HATENA_USER_ID=your_hatena_user_id
 HATENA_BLOG_ID=your_blog_id
 GEMINI_API_KEY=your_gemini_api_key
 ```

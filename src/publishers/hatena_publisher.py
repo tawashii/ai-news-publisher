@@ -6,7 +6,7 @@ from xml.etree.ElementTree import Element, SubElement, tostring
 class HatenaPublisher:
     def __init__(self, config):
         self.config = config
-        self.user_id = config.hatena_user_id
+        self.user_id = config.hatena_username
         self.blog_id = config.hatena_blog_id
         self.api_key = config.hatena_api_key
         

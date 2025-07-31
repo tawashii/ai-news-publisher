@@ -45,7 +45,6 @@ jobs:
     - name: AI News Publisher を実行
       env:
         HATENA_API_KEY: ${{ secrets.HATENA_API_KEY }}
-        HATENA_USER_ID: ${{ secrets.HATENA_USER_ID }}
         HATENA_BLOG_ID: ${{ secrets.HATENA_BLOG_ID }}
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
