@@ -96,6 +96,11 @@ class Config:
         return os.environ.get('HATENA_BLOG_ID')
     
     @property
+    def hatena_user_id(self) -> Optional[str]:
+        """はてなユーザーIDを取得"""
+        return os.environ.get('HATENA_USER_ID')
+    
+    @property
     def gemini_api_key(self) -> Optional[str]:
         """Gemini APIキーを取得"""
         return os.environ.get('GEMINI_API_KEY')
