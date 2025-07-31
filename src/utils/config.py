@@ -112,6 +112,7 @@ class Config:
         """
         required_vars: List[str] = [
             'HATENA_API_KEY',
+            'HATENA_USERNAME',
             'HATENA_BLOG_ID',
             'GEMINI_API_KEY'
         ]
