@@ -17,7 +17,9 @@ on:
         type: boolean
 
 jobs:
-  publish-news:
+publish-news:
+  permissions:
+    issues: write
     runs-on: ubuntu-latest
     
     steps:
