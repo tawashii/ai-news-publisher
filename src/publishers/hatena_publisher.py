@@ -23,7 +23,7 @@ class HatenaPublisher:
             
             # Basic認証のヘッダー作成
             headers = self._create_auth_headers()
-            headers['Content-Type'] = 'application/xml'
+            headers['Content-Type'] = 'application/atom+xml; charset=utf-8'
             
             # はてなブログAPIに投稿
             response = requests.post(
@@ -123,8 +123,8 @@ class HatenaPublisher:
         try:
             headers = self._create_auth_headers()
             
-            # ブログ情報を取得してテスト
-            blog_url = f"https://blog.hatena.ne.jp/{self.user_id}/{self.blog_id}/atom"
+            # エントリ一覧を取得してテスト（公式ドキュメント準拠）
+            blog_url = f"https://blog.hatena.ne.jp/{self.user_id}/{self.blog_id}/atom/entry"
             response = requests.get(blog_url, headers=headers, timeout=10)
             
             if response.status_code == 200:
