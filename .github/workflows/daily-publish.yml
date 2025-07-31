@@ -1,0 +1,45 @@
+name: Daily AI News Publisher
+
+on:
+  schedule:
+    # 毎日8:30 JST (23:30 UTC) に実行
+    - cron: '30 23 * * *'
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run AI News Publisher
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        HATENA_USERNAME: ${{ secrets.HATENA_USERNAME }}
+        HATENA_API_KEY: ${{ secrets.HATENA_API_KEY }}
+        HATENA_BLOG_ID: ${{ secrets.HATENA_BLOG_ID }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPO: ${{ github.repository }}
+      run: |
+        cd src
+        python main.py
+    
+    - name: Upload logs (on failure)
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: error-logs
+        path: logs/
+        retention-days: 7

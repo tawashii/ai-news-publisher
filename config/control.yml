@@ -1,0 +1,4 @@
+skip_next_publish: false
+maintenance_mode: false
+min_articles_required: 2
+max_articles_per_post: 5

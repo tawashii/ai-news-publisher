@@ -1,0 +1,66 @@
+name: AI News Auto Publisher
+
+on:
+  schedule:
+    # 毎日8:15と8:30に実行（UTC時間で指定）
+    # JST 8:15 = UTC 23:15 (前日)
+    # JST 8:30 = UTC 23:30 (前日) 
+    - cron: '15 23 * * *'  # 情報収集 & 記事生成 & 投稿を一括実行
+  
+  # 手動実行も可能
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'テスト実行（実際には投稿しない）'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  publish-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: リポジトリをチェックアウト
+      uses: actions/checkout@v4
+    
+    - name: Python環境をセットアップ
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+    
+    - name: 依存関係をインストール
+      run: |
+        pip install -r requirements.txt
+    
+    - name: ollama をインストール（フォールバック用）
+      run: |
+        curl -fsSL https://ollama.ai/install.sh | sh
+        ollama serve &
+        sleep 10
+        ollama pull llama3.1:latest
+      continue-on-error: true
+    
+    - name: AI News Publisher を実行
+      env:
+        HATENA_API_KEY: ${{ secrets.HATENA_API_KEY }}
+        HATENA_USER_ID: ${{ secrets.HATENA_USER_ID }}
+        HATENA_BLOG_ID: ${{ secrets.HATENA_BLOG_ID }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        DRY_RUN: ${{ github.event.inputs.dry_run }}
+      run: |
+        cd src
+        python main.py
+    
+    - name: ログファイルをアップロード（エラー時）
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: error-logs
+        path: |
+          *.log
+          data/
+        retention-days: 7

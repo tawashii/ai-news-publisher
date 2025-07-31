@@ -1,0 +1,27 @@
+rss_sources:
+  - name: "ITmedia AI+"
+    url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml"
+    enabled: true
+  - name: "はてなブックマーク テクノロジー"
+    url: "https://b.hatena.ne.jp/hotentry/it.rss"
+    enabled: true
+  - name: "Zenn AI"
+    url: "https://zenn.dev/topics/ai/feed"
+    enabled: true
+
+twitter_accounts:
+  - account: "chatgptlc"
+    display_name: "ChatGPT研究所"
+    enabled: true
+  - account: "schroneko"
+    display_name: "ぬこぬこ"
+    enabled: true
+  - account: "usutaku_channel"
+    display_name: "usutaku"
+    enabled: true
+  - account: "minorun365"
+    display_name: "みのるん"
+    enabled: true
+
+search_time_range:
+  hours_back: 20  # 昨日12時から20時間前まで
