@@ -30,10 +30,10 @@ class HatenaPublisher:
             headers = self._create_auth_headers()
             headers['Content-Type'] = 'application/atom+xml; charset=utf-8'
             
-            # はてなブログAPIに投稿
+            # はてなブログAPIに投稿（UTF-8バイト文字列として送信）
             response = requests.post(
                 self.api_url,
-                data=entry_xml,
+                data=entry_xml.encode('utf-8'),
                 headers=headers,
                 timeout=30
             )
@@ -57,17 +57,13 @@ class HatenaPublisher:
             return False
     
     def _create_entry_xml(self, title: str, content: str, category: str) -> str:
-        """AtomPub形式のXMLエントリを作成（はてなブログ公式仕様準拠）"""
-        # シンプルなXML文字列として作成（名前空間の問題を回避）
+        """AtomPub形式のXMLエントリを作成（最もシンプルな形式）"""
+        # 最もシンプルなAtomエントリ
         xml_template = '''<?xml version="1.0" encoding="utf-8"?>
-<entry xmlns="http://www.w3.org/2005/Atom"
-       xmlns:app="http://www.w3.org/2007/app">
+<entry xmlns="http://www.w3.org/2005/Atom">
   <title>{title}</title>
   <content type="text/x-markdown">{content}</content>
   <category term="{category}" />
-  <app:control>
-    <app:draft>no</app:draft>
-  </app:control>
 </entry>'''
         
         # XMLエスケープ処理
