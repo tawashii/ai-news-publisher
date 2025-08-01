@@ -1,6 +1,7 @@
 import requests
 import os
 from datetime import datetime
+from .datetime_utils import now_jst_str
 
 class GitHubIssueCreator:
     def __init__(self):
@@ -52,7 +53,7 @@ class GitHubIssueCreator:
     
     def create_error_issue(self, error_type: str, error_message: str, additional_info: str = "") -> bool:
         """エラー用のIssueを作成"""
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        timestamp = now_jst_str()
         
         title = f"🚨 自動投稿エラー: {error_type} ({timestamp})"
         
@@ -82,7 +83,7 @@ class GitHubIssueCreator:
     
     def create_skip_issue(self, reason: str, details: str = "") -> bool:
         """投稿スキップ用のIssueを作成"""
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        timestamp = now_jst_str()
         
         title = f"⏭️  投稿スキップ: {reason} ({timestamp})"
         

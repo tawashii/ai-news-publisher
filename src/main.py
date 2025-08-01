@@ -15,6 +15,7 @@ from utils.database import ArticleHistoryDB
 from utils.github_issues import GitHubIssueCreator
 from utils.logger import get_logger
 from utils.constants import MAX_ARTICLES_PER_POST, MIN_ARTICLES_REQUIRED, DATE_FORMAT
+from utils.datetime_utils import now_jst_str, today_jst_str
 from collectors.base_collector import Article
 from collectors.rss_collector import RSSCollector
 from collectors.twitter_collector import TwitterCollector
@@ -44,7 +45,7 @@ class NewsPublisher:
         """メイン処理を実行"""
         try:
             self.logger.start_process("AI Tech News Auto Publisher")
-            self.logger.info("実行開始", timestamp=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            self.logger.info("実行開始", timestamp=now_jst_str())
             
             # 1. 設定チェック
             self._check_configuration()
@@ -78,7 +79,7 @@ class NewsPublisher:
             
             # 6. はてなブログ投稿
             print("\n📝 はてなブログ投稿を開始...")
-            title = f"今日のAIニュース（{datetime.now().strftime(DATE_FORMAT)}）"
+            title = f"今日のAIニュース（{today_jst_str()}）"
             
             success = self.hatena_publisher.publish(title, blog_content)
             
