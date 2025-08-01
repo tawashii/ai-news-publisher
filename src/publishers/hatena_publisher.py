@@ -21,6 +21,9 @@ class HatenaPublisher:
             # AtomPub形式のXMLを作成
             entry_xml = self._create_entry_xml(title, content, category)
             
+            # デバッグ: 生成XMLの一部を表示
+            print(f"🔍 生成XML（最初の200文字）: {entry_xml[:200]}...")
+            
             # Basic認証のヘッダー作成
             headers = self._create_auth_headers()
             headers['Content-Type'] = 'application/atom+xml; charset=utf-8'
@@ -83,8 +86,8 @@ class HatenaPublisher:
         app_draft = SubElement(app_control, "{http://www.w3.org/2007/app}draft")
         app_draft.text = "no"
         
-        # XMLを文字列に変換
-        xml_string = tostring(entry, encoding='unicode')
+        # XMLを文字列に変換（UTF-8エンコーディング）
+        xml_string = tostring(entry, encoding='utf-8').decode('utf-8')
         return f'<?xml version="1.0" encoding="utf-8"?>\n{xml_string}'
     
     def _create_auth_headers(self) -> dict:
