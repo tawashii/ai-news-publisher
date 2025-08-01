@@ -78,7 +78,7 @@ class NewsPublisher:
             
             # 6. はてなブログ投稿
             print("\n📝 はてなブログ投稿を開始...")
-            title = f"今日のAIニュースまとめ（{datetime.now().strftime(DATE_FORMAT)}）"
+            title = f"今日のテックニュース（{datetime.now().strftime(DATE_FORMAT)}）"
             
             success = self.hatena_publisher.publish(title, blog_content)
             
