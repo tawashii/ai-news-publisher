@@ -21,8 +21,10 @@ class HatenaPublisher:
             # AtomPub形式のXMLを作成
             entry_xml = self._create_entry_xml(title, content, category)
             
-            # デバッグ: 生成XMLの一部を表示
-            print(f"🔍 生成XML（最初の200文字）: {entry_xml[:200]}...")
+            # デバッグ: 生成XMLの全体を表示
+            print(f"🔍 生成XML全体:")
+            print(entry_xml)
+            print("🔍 XML終了")
             
             # Basic認証のヘッダー作成
             headers = self._create_auth_headers()
@@ -55,40 +57,30 @@ class HatenaPublisher:
             return False
     
     def _create_entry_xml(self, title: str, content: str, category: str) -> str:
-        """AtomPub形式のXMLエントリを作成"""
-        # XMLネームスペース
-        atom_ns = "http://www.w3.org/2005/Atom"
-        app_ns = "http://www.w3.org/2007/app"
-        hatena_ns = "http://www.hatena.ne.jp/info/xmlns#"
+        """AtomPub形式のXMLエントリを作成（はてなブログ公式仕様準拠）"""
+        # シンプルなXML文字列として作成（名前空間の問題を回避）
+        xml_template = '''<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom"
+       xmlns:app="http://www.w3.org/2007/app">
+  <title>{title}</title>
+  <content type="text/x-markdown">{content}</content>
+  <category term="{category}" />
+  <app:control>
+    <app:draft>no</app:draft>
+  </app:control>
+</entry>'''
         
-        # ルート要素
-        entry = Element("entry")
-        entry.set("xmlns", atom_ns)
-        entry.set("xmlns:app", app_ns)
-        entry.set("xmlns:hatena", hatena_ns)
+        # XMLエスケープ処理
+        import html
+        escaped_title = html.escape(title)
+        escaped_content = html.escape(content)
+        escaped_category = html.escape(category)
         
-        # タイトル
-        title_elem = SubElement(entry, "title")
-        title_elem.text = title
-        
-        # 本文
-        content_elem = SubElement(entry, "content")
-        content_elem.set("type", "text/x-markdown")  # Markdown形式で投稿
-        content_elem.text = content
-        
-        # カテゴリ
-        category_elem = SubElement(entry, "category")
-        category_elem.set("term", category)
-        
-        # はてなブログ固有の設定
-        # 下書きではなく公開
-        app_control = SubElement(entry, "{http://www.w3.org/2007/app}control")
-        app_draft = SubElement(app_control, "{http://www.w3.org/2007/app}draft")
-        app_draft.text = "no"
-        
-        # XMLを文字列に変換（UTF-8エンコーディング）
-        xml_string = tostring(entry, encoding='utf-8').decode('utf-8')
-        return f'<?xml version="1.0" encoding="utf-8"?>\n{xml_string}'
+        return xml_template.format(
+            title=escaped_title,
+            content=escaped_content,
+            category=escaped_category
+        )
     
     def _create_auth_headers(self) -> dict:
         """Basic認証のヘッダーを作成"""
