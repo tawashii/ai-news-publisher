@@ -132,6 +132,8 @@ class HatenaPublisher:
                 return True
             else:
                 print(f"❌ はてなブログAPI接続失敗: {response.status_code}")
+                print(f"🔍 接続先URL: {blog_url}")
+                print(f"🔍 レスポンス: {response.text[:200]}")
                 return False
         
         except Exception as e:
