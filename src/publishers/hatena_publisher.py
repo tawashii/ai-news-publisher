@@ -62,7 +62,7 @@ class HatenaPublisher:
         xml_template = '''<?xml version="1.0" encoding="utf-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
   <title>{title}</title>
-  <content type="text/x-markdown">{content}</content>
+  <content type="text/markdown">{content}</content>
   <category term="{category}" />
 </entry>'''
         
